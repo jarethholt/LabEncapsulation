@@ -6,17 +6,27 @@ internal class Program
     {
         // Read the data for 5 Persons
         int numPersons = 5;
-        Person[] persons = new Person[numPersons];
+        List<Person> persons = [];
         for (int i = 0; i < numPersons; i++)
         {
             string[] cmdArgs = Console.ReadLine()!.Split();
-            persons[i] = new(cmdArgs[0], cmdArgs[1], int.Parse(cmdArgs[2]));
+            try
+            {
+                persons.Add(new(
+                    cmdArgs[0],
+                    cmdArgs[1],
+                    int.Parse(cmdArgs[2]),
+                    decimal.Parse(cmdArgs[3])));
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
+        decimal bonus = decimal.Parse(Console.ReadLine()!);
 
-        // Sort and print the Persons by first name and age
-        persons.OrderBy(person => person.FirstName)
-               .ThenBy(person => person.Age)
-               .ToList()
-               .ForEach(person => Console.WriteLine(person.ToString()));
+        // Increase salary and display results
+        persons.ForEach(person => person.IncreaseSalary(bonus));
+        persons.ForEach(person => Console.WriteLine(person.ToString()));
     }
 }
